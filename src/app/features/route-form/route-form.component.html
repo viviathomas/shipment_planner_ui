@@ -1,0 +1,43 @@
+<div class="form-container">
+
+  <h2>Route Input</h2>
+
+  <div class="form-row">
+    <label>Source:</label>
+    <input type="text" [(ngModel)]="form.source" placeholder="Enter source city">
+  </div>
+
+  <div class="form-row">
+    <label>Destination:</label>
+    <input type="text" [(ngModel)]="form.destination" placeholder="Enter destination city">
+  </div>
+
+  <div class="form-row">
+    <label>Product Type:</label>
+    <select [(ngModel)]="form.productType">
+      <option value="general">General Goods</option>
+      <option value="electronics">Electronics</option>
+      <option value="perishables">Perishables</option>
+      <option value="pharma">Pharmaceuticals</option>
+    </select>
+  </div>
+
+  <h3>Optimization Weights</h3>
+
+  <div class="slider-row">
+    <label>Distance Weight (α): {{weights.alpha}}</label>
+    <input type="range" min="0" max="1" step="0.1" [(ngModel)]="weights.alpha">
+  </div>
+
+  <div class="slider-row">
+    <label>Cost Weight (β): {{weights.beta}}</label>
+    <input type="range" min="0" max="1" step="0.1" [(ngModel)]="weights.beta">
+  </div>
+
+  <div class="slider-row">
+    <label>Emission Weight (γ): {{weights.gamma}}</label>
+    <input type="range" min="0" max="1" step="0.1" [(ngModel)]="weights.gamma">
+  </div>
+
+  <button class="submit-btn" (click)="submitForm()">Generate Preliminary Routes</button>
+</div>

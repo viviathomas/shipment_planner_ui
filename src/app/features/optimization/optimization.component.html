@@ -1,0 +1,19 @@
+<h2>Optimization Settings</h2>
+
+<div class="setting">
+  <label>Distance Weight (α): {{ alpha }}</label>
+  <input type="range" min="0" max="1" step="0.1" [(ngModel)]="alpha" />
+</div>
+
+<div class="setting">
+  <label>Cost Weight (β): {{ beta }}</label>
+  <input type="range" min="0" max="1" step="0.1" [(ngModel)]="beta" />
+</div>
+
+<div class="setting">
+  <label>Emission Weight (γ): {{ gamma }}</label>
+  <input type="range" min="0" max="1" step="0.1" [(ngModel)]="gamma" />
+</div>
+
+<button (click)="save()">Save Settings</button>
+<p class="muted">Saved settings will be used when you plan shipments from Unified Control.</p>

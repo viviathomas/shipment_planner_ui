@@ -1,0 +1,37 @@
+.form-container {
+   padding: 15px;
+   background: #262a33;
+   border-radius: 8px;
+   color: white;
+ }
+
+ .form-row, .slider-row {
+   margin-bottom: 15px;
+   display: flex;
+   flex-direction: column;
+ }
+
+ input, select {
+   padding: 8px;
+   border-radius: 5px;
+   border: none;
+   margin-top: 5px;
+   background: #333844;
+   color: white;
+ }
+
+ .submit-btn {
+   width: 100%;
+   padding: 10px;
+   border: none;
+   background: #4a9cff;
+   color: white;
+   border-radius: 5px;
+   cursor: pointer;
+   margin-top: 10px;
+   font-weight: bold;
+ }
+
+ .submit-btn:hover {
+   background: #1e7be5;
+ }

@@ -1,0 +1,47 @@
+.two-panels {
+  display: flex;
+  gap: 24px;
+  padding: 20px;
+}
+
+.panel {
+  background: white;
+  padding: 18px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  flex: 1;
+}
+
+.orders-panel {
+  max-width: 60%;
+}
+
+.shipments-panel {
+  max-width: 40%;
+}
+
+.upload-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.orders-table,
+.shipments-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td,
+.shipments-table th,
+.shipments-table td {
+  border-bottom: 1px solid #eee;
+  padding: 8px;
+}
+
+.empty {
+  text-align: center;
+  padding: 20px;
+  color: #777;
+}

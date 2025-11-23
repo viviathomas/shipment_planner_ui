@@ -1,0 +1,84 @@
+<div class="unified-container">
+  <div class="two-panels">
+
+    <!-- ORDERS PANEL -->
+    <section class="panel orders-panel">
+      <h2>Orders</h2>
+
+      <div class="upload-row">
+        <input type="file" (change)="uploadOrders($event)" accept=".csv" />
+        <button (click)="planSelectedOrders()" [disabled]="selectedOrderIds.size === 0">
+          Plan Selected ({{ selectedOrderIds.size }})
+        </button>
+      </div>
+
+      <table>
+        <thead>
+        <tr>
+          <th><input type="checkbox" (change)="toggleSelectAll($event)" /></th>
+          <th>Order ID</th>
+          <th>Source</th>
+          <th>Destination</th>
+          <th>Product Type</th>
+          <th>Weight</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let o of orders">
+          <td><input type="checkbox" [checked]="isSelected(o.orderId)" (change)="toggleOrderSelection(o.orderId)" /></td>
+          <td>{{ o.orderId }}</td>
+          <td>{{ o.source }}</td>
+          <td>{{ o.destination }}</td>
+          <td>{{ o.productType }}</td>
+          <td>{{ o.weight }}</td>
+        </tr>
+
+        <tr *ngIf="orders.length === 0">
+          <td colspan="6" class="empty">No orders uploaded yet</td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SHIPMENTS PANEL -->
+    <section class="panel shipments-panel">
+      <h2>Planned Shipments</h2>
+
+      <table *ngIf="shipments.length > 0">
+        <thead>
+        <tr>
+          <th>Shipment ID</th>
+          <th>Pickup</th>
+          <th>Delivery</th>
+          <th>Stops</th>
+          <th>Orders</th>
+          <th>Distance</th>
+          <th>Cost</th>
+          <th>ETA</th>
+          <th>Lane</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let s of shipments">
+          <td>{{ s.shipmentId }}</td>
+          <td>{{ s.pickup }}</td>
+          <td>{{ s.delivery }}</td>
+          <td>{{ s.stops?.length || 0 }}</td>
+          <td>{{ s.assignedOrders.length }}</td>
+          <td>{{ s.distance }}</td>
+          <td>{{ s.cost }}</td>
+          <td>{{ s.eta }}</td>
+          <td>{{ s.laneId }}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="shipments.length === 0" class="empty">
+        No shipments planned
+      </div>
+    </section>
+
+  </div>
+</div>
