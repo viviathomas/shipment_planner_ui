@@ -1,90 +1,187 @@
-.two-panels {
-  display: flex;
-  gap: 24px;
-  padding: 20px;
+.unified-wrapper {
+
+  display: grid;
+
+  grid-template-columns: 1.1fr 0.9fr;  /* clean proportion */
+
+  gap: 35px;
+
+  padding: 25px 35px;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
 }
+ 
+/* PANEL STYLING */
 
 .panel {
-  background: white;
-  padding: 18px;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  flex: 1;
-}
 
-.orders-panel {
-  max-width: 60%;
-}
+  background: #ffffff;
 
-.shipments-panel {
-  max-width: 40%;
+  padding: 26px 30px;
+
+  border-radius: 14px;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+
+  border: 1px solid #e6e9f2;
+
+  min-height: 85vh;            /* makes both boxes tall and even */
+
+  display: flex;
+
+  flex-direction: column;
+
 }
+ 
+h2 {
+
+  margin: 0 0 20px 0;
+
+  font-size: 22px;
+
+  font-weight: 650;
+
+  color: #1c2d5a;
+
+}
+ 
+/* Upload Row */
 
 .upload-row {
+
   display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-}
 
-.orders-table,
-.shipments-table {
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 16px;
+
+}
+ 
+.upload-row input[type="file"] {
+
+  padding: 6px;
+
+  font-size: 14px;
+
+}
+ 
+/* TABLE WRAPPING */
+
+.table-container {
+
+  flex-grow: 1;                 /* table fills remaining height */
+
+  overflow-y: auto;
+
+  overflow-x: auto;
+
+  padding-right: 4px;
+
+}
+ 
+/* CLEAN TABLE */
+
+.nice-table {
+
   width: 100%;
-  border-collapse: collapse;
-}
 
-.orders-table th,
-.orders-table td,
-.shipments-table th,
-.shipments-table td {
-  border-bottom: 1px solid #eee;
-  padding: 8px;
+  border-collapse: separate;
+
+  border-spacing: 0 8px;
+
+  font-size: 14px;
+
 }
+ 
+.nice-table thead th {
+
+  text-align: left;
+
+  padding: 12px 14px;
+
+  background: #f3f6fb;
+
+  border-bottom: 2px solid #d9e2ec;
+
+  color: #1e3a66;
+
+  font-weight: 600;
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 2;
+
+}
+ 
+.nice-table tbody tr {
+
+  background: #ffffff;
+
+  border-radius: 10px;
+
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+
+}
+ 
+.nice-table tbody td {
+
+  padding: 12px 14px;
+
+  border-bottom: 1px solid #f2f3f7;
+
+}
+ 
+.nice-table tbody tr:last-child td {
+
+  border-bottom: none;
+
+}
+ 
+/* EMPTY TEXT */
 
 .empty {
+
+  padding: 25px;
+
   text-align: center;
-  padding: 20px;
+
   color: #777;
-}
 
-/* ------------------------------- */
-/* 🚨 OPTION B WARNING BANNER      */
-/* ------------------------------- */
+}
+ 
+/* Warning Box */
+
 .warning-box {
-  background: #fff4cc;
-  padding: 10px 12px;
-  border: 1px solid #f0c14b;
-  color: #8a6d3b;
-  margin-bottom: 15px;
+
+  background: #fff3cd;
+
+  color: #856404;
+
+  border: 1px solid #ffeeba;
+
+  padding: 12px 14px;
+
   border-radius: 6px;
+
+  margin-bottom: 18px;
+
   font-size: 14px;
+
+}
+ 
+/* CHECKBOX Alignment */
+
+.nice-table input[type="checkbox"] {
+
+  transform: scale(1.2);
+
 }
 
-/* ------------------------------- */
-/* 🛑 ORPHAN ORDERS BOX            */
-/* ------------------------------- */
-.orphan-box {
-  background: #ffe6e6;
-  border: 1px solid #ff9999;
-  padding: 12px;
-  border-radius: 6px;
-  margin-bottom: 20px;
-}
-
-.orphan-box h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 15px;
-  color: #b30000;
-}
-
-.orphan-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.orphan-table th,
-.orphan-table td {
-  padding: 6px;
-  border-bottom: 1px solid #ddd;
-}
+ 

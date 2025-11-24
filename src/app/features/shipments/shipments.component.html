@@ -1,33 +1,32 @@
-<h2>Past Shipments</h2>
-
-<table class="table" *ngIf="shipments.length > 0">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Pickup</th>
-      <th>Delivery</th>
-      <th>Orders</th>
-      <th>Distance</th>
-      <th>Cost</th>
-      <th>ETA</th>
-      <th>Lane</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let s of shipments">
-      <td>{{ s.shipmentId }}</td>
-      <td>{{ s.pickup }}</td>
-      <td>{{ s.delivery }}</td>
-      <td>{{ s.assignedOrders.length }}</td>
-      <td>{{ s.distance }}</td>
-      <td>{{ s.cost }}</td>
-      <td>{{ s.eta }}</td>
-      <td>{{ s.laneId }}</td>
-    </tr>
-  </tbody>
+<h2 class="title">Past Shipments</h2>
+ 
+<table class="pretty-table" *ngIf="shipments.length > 0">
+<thead>
+<tr>
+<th>ID</th>
+<th>Pickup</th>
+<th>Delivery</th>
+<th>Orders</th>
+<th>Distance</th>
+<th>Cost</th>
+<th>ETA</th>
+<th>Lane</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let s of shipments">
+<td>{{ s.shipmentId }}</td>
+<td>{{ s.pickup }}</td>
+<td>{{ s.delivery }}</td>
+<td>{{ s.assignedOrders.length }}</td>
+<td>{{ s.distance }}</td>
+<td>{{ s.cost }}</td>
+<td>{{ s.eta }}</td>
+<td>{{ s.laneId }}</td>
+</tr>
+</tbody>
 </table>
-
-<div *ngIf="shipments.length === 0">
+ 
+<div *ngIf="shipments.length === 0" class="empty-msg">
   No shipments recorded yet.
 </div>
-<p>shipments works!</p>

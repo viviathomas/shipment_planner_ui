@@ -1,0 +1,71 @@
+
+ 
+.title {
+
+  font-size: 28px;
+
+  font-weight: 700;
+
+  margin-bottom: 20px;
+
+}
+ 
+.pretty-table {
+
+  width: 100%;
+
+  border-collapse: separate;
+
+  border-spacing: 0 8px;
+
+  font-size: 15px;
+
+}
+ 
+.pretty-table thead th {
+
+  background: #f3f3f3;
+
+  padding: 12px;
+
+  font-weight: 600;
+
+  text-align: left;
+
+  border-bottom: 2px solid #ddd;
+
+}
+ 
+.pretty-table tbody tr {
+
+  background: #fff;
+
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+
+}
+ 
+.pretty-table tbody td {
+
+  padding: 14px 12px;
+
+}
+ 
+.pretty-table tbody tr:hover {
+
+  background: #fafafa;
+
+  transition: 0.2s ease-in-out;
+
+}
+ 
+.empty-msg {
+
+  margin-top: 20px;
+
+  font-size: 16px;
+
+  color: #777;
+
+}
+
+ 

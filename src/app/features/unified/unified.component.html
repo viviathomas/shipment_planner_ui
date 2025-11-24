@@ -1,18 +1,18 @@
-<div class="unified-container">
-  <div class="two-panels">
+<div class="unified-wrapper">
 
-    <!-- ORDERS PANEL -->
-    <section class="panel orders-panel">
-      <h2>Orders</h2>
+  <!-- ORDERS PANEL -->
+  <section class="panel orders-panel">
+    <h2>Orders</h2>
 
-      <div class="upload-row">
-        <input type="file" (change)="uploadOrders($event)" accept=".csv" />
-        <button (click)="planSelectedOrders()" [disabled]="selectedOrderIds.size === 0">
-          Plan Selected ({{ selectedOrderIds.size }})
-        </button>
-      </div>
+    <div class="upload-row">
+      <input type="file" (change)="uploadOrders($event)" accept=".csv" />
+      <button (click)="planSelectedOrders()" [disabled]="selectedOrderIds.size === 0">
+        Plan Selected ({{ selectedOrderIds.size }})
+      </button>
+    </div>
 
-      <table>
+    <div class="table-container">
+      <table class="nice-table">
         <thead>
           <tr>
             <th><input type="checkbox" (change)="toggleSelectAll($event)" /></th>
@@ -39,41 +39,19 @@
           </tr>
         </tbody>
       </table>
-    </section>
+    </div>
+  </section>
 
-    <!-- SHIPMENTS PANEL -->
-    <section class="panel shipments-panel">
-      <h2>Planned Shipments</h2>
+  <!-- SHIPMENTS PANEL -->
+  <section class="panel shipments-panel">
+    <h2>Planned Shipments</h2>
 
-      <!-- ⚠️ OPTION B WARNING -->
-      <div *ngIf="multiODWarning" class="warning-box">
-        ⚠️ {{ multiODWarning }}
-      </div>
+    <div *ngIf="multiODWarning" class="warning-box">
+      ⚠️ {{ multiODWarning }}
+    </div>
 
-      <!-- 🚫 ORPHAN ORDERS -->
-      <div *ngIf="orphanOrders.length > 0" class="orphan-box">
-        <h3>Orphan Orders (No Lane Available)</h3>
-        <table class="orphan-table">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Source</th>
-              <th>Destination</th>
-              <th>Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let o of orphanOrders">
-              <td>{{ o.orderId }}</td>
-              <td>{{ o.source }}</td>
-              <td>{{ o.destination }}</td>
-              <td>{{ o.reason }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <table *ngIf="shipments.length > 0">
+    <div class="table-container">
+      <table class="nice-table" *ngIf="shipments.length > 0">
         <thead>
           <tr>
             <th>Shipment ID</th>
@@ -106,6 +84,7 @@
       <div *ngIf="shipments.length === 0" class="empty">
         No shipments planned
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+
 </div>
