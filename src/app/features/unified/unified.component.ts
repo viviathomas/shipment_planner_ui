@@ -19,6 +19,8 @@ export class UnifiedComponent implements OnInit {
   orders: Order[] = [];
   shipments: Shipment[] = [];
   selectedOrderIds = new Set<string>();
+  multiODWarning: string | null = null;
+  orphanOrders: any[] = [];
 
   loading = false;
 
@@ -71,8 +73,20 @@ export class UnifiedComponent implements OnInit {
       alert("Select at least one order.");
       return;
     }
+    const selectedOrders = this.orders.filter(o =>
+    this.selectedOrderIds.has(o.orderId)
+  );
 
-    const opt = this.optSvc.get();
+  // Detect MULTIPLE OD pairs → Option B warning
+  const odPairs = new Set(selectedOrders.map(o => o.source + "->" + o.destination));
+
+  if (odPairs.size > 1) {
+    this.multiODWarning =
+      "Multiple origin-destination pairs detected. Shipments will be created separately.";
+  } else {
+    this.multiODWarning = null;
+  }
+     const opt = this.optSvc.get();
 
     const body = {
       alpha: opt.alpha,

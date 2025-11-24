@@ -14,29 +14,29 @@
 
       <table>
         <thead>
-        <tr>
-          <th><input type="checkbox" (change)="toggleSelectAll($event)" /></th>
-          <th>Order ID</th>
-          <th>Source</th>
-          <th>Destination</th>
-          <th>Product Type</th>
-          <th>Weight</th>
-        </tr>
+          <tr>
+            <th><input type="checkbox" (change)="toggleSelectAll($event)" /></th>
+            <th>Order ID</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Product Type</th>
+            <th>Weight</th>
+          </tr>
         </thead>
 
         <tbody>
-        <tr *ngFor="let o of orders">
-          <td><input type="checkbox" [checked]="isSelected(o.orderId)" (change)="toggleOrderSelection(o.orderId)" /></td>
-          <td>{{ o.orderId }}</td>
-          <td>{{ o.source }}</td>
-          <td>{{ o.destination }}</td>
-          <td>{{ o.productType }}</td>
-          <td>{{ o.weight }}</td>
-        </tr>
+          <tr *ngFor="let o of orders">
+            <td><input type="checkbox" [checked]="isSelected(o.orderId)" (change)="toggleOrderSelection(o.orderId)" /></td>
+            <td>{{ o.orderId }}</td>
+            <td>{{ o.source }}</td>
+            <td>{{ o.destination }}</td>
+            <td>{{ o.productType }}</td>
+            <td>{{ o.weight }}</td>
+          </tr>
 
-        <tr *ngIf="orders.length === 0">
-          <td colspan="6" class="empty">No orders uploaded yet</td>
-        </tr>
+          <tr *ngIf="orders.length === 0">
+            <td colspan="6" class="empty">No orders uploaded yet</td>
+          </tr>
         </tbody>
       </table>
     </section>
@@ -45,33 +45,61 @@
     <section class="panel shipments-panel">
       <h2>Planned Shipments</h2>
 
+      <!-- ⚠️ OPTION B WARNING -->
+      <div *ngIf="multiODWarning" class="warning-box">
+        ⚠️ {{ multiODWarning }}
+      </div>
+
+      <!-- 🚫 ORPHAN ORDERS -->
+      <div *ngIf="orphanOrders.length > 0" class="orphan-box">
+        <h3>Orphan Orders (No Lane Available)</h3>
+        <table class="orphan-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Source</th>
+              <th>Destination</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let o of orphanOrders">
+              <td>{{ o.orderId }}</td>
+              <td>{{ o.source }}</td>
+              <td>{{ o.destination }}</td>
+              <td>{{ o.reason }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <table *ngIf="shipments.length > 0">
         <thead>
-        <tr>
-          <th>Shipment ID</th>
-          <th>Pickup</th>
-          <th>Delivery</th>
-          <th>Stops</th>
-          <th>Orders</th>
-          <th>Distance</th>
-          <th>Cost</th>
-          <th>ETA</th>
-          <th>Lane</th>
-        </tr>
+          <tr>
+            <th>Shipment ID</th>
+            <th>Pickup</th>
+            <th>Delivery</th>
+            <th>Stops</th>
+            <th>Orders</th>
+            <th>Distance</th>
+            <th>Cost</th>
+            <th>ETA</th>
+            <th>Lane</th>
+          </tr>
         </thead>
 
         <tbody>
-        <tr *ngFor="let s of shipments">
-          <td>{{ s.shipmentId }}</td>
-          <td>{{ s.pickup }}</td>
-          <td>{{ s.delivery }}</td>
-          <td>{{ s.stops?.length || 0 }}</td>
-          <td>{{ s.assignedOrders.length }}</td>
-          <td>{{ s.distance }}</td>
-          <td>{{ s.cost }}</td>
-          <td>{{ s.eta }}</td>
-          <td>{{ s.laneId }}</td>
-        </tr>
+          <tr *ngFor="let s of shipments">
+            <td>{{ s.shipmentId }}</td>
+            <td>{{ s.pickup }}</td>
+            <td>{{ s.delivery }}</td>
+            <td>{{ s.stops?.length || 0 }}</td>
+            <td>{{ s.assignedOrders.length }}</td>
+            <td>{{ s.distance }}</td>
+            <td>{{ s.cost }}</td>
+            <td>{{ s.eta }}</td>
+            <td>{{ s.laneId }}</td>
+          </tr>
         </tbody>
       </table>
 
@@ -79,6 +107,5 @@
         No shipments planned
       </div>
     </section>
-
   </div>
 </div>

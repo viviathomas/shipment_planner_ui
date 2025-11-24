@@ -33,7 +33,7 @@ export interface Shipment {
 // Returned from backend
 export interface RoutePlanResult {
   shipments: Shipment[];
-  unassignedOrders?: string[];
+  orphanOrders?: string[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -49,9 +49,10 @@ export class ShipmentService {
     return this.http.get<Order[]>(`${this.base}/orders`);
   }
 
-  getShipments(): Observable<Shipment[]> {
-    return this.http.get<Shipment[]>(`${this.base}/shipments`);
-  }
+  getPastShipments(): Observable<Shipment[]> {
+  return this.http.get<Shipment[]>(`${this.base}/routes/history`);
+}
+
 
   // 🚀 FIXED: Correct endpoint + correct field name “orders”
   planShipments(body: any): Observable<RoutePlanResult> {

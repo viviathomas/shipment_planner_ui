@@ -45,3 +45,46 @@
   padding: 20px;
   color: #777;
 }
+
+/* ------------------------------- */
+/* 🚨 OPTION B WARNING BANNER      */
+/* ------------------------------- */
+.warning-box {
+  background: #fff4cc;
+  padding: 10px 12px;
+  border: 1px solid #f0c14b;
+  color: #8a6d3b;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* ------------------------------- */
+/* 🛑 ORPHAN ORDERS BOX            */
+/* ------------------------------- */
+.orphan-box {
+  background: #ffe6e6;
+  border: 1px solid #ff9999;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.orphan-box h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #b30000;
+}
+
+.orphan-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.orphan-table th,
+.orphan-table td {
+  padding: 6px;
+  border-bottom: 1px solid #ddd;
+}
