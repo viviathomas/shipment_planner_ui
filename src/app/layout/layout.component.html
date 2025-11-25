@@ -12,18 +12,9 @@
       <a routerLink="/unified" routerLinkActive="active">Unified Control</a>
       <a routerLink="/optimization" routerLinkActive="active">Optimization Settings</a>
       <a routerLink="/shipments" routerLinkActive="active">Shipments</a>
+      <a routerLink="/lanes" routerLinkActive="active">Lanes</a>
     </nav>
 
-    <div class="lanes-section" *ngIf="!collapsed">
-      <h3>Lanes</h3>
-      <div *ngIf="lanes.length === 0">No lanes loaded</div>
-      <ul *ngIf="lanes.length > 0">
-        <li *ngFor="let l of lanes">
-          <strong>{{ l.laneId }}</strong><br />
-          cost: {{ l.baseCost }} | dist: {{ l.distance }}
-        </li>
-      </ul>
-    </div>
 
   </aside>
 

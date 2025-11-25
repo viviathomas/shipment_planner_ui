@@ -1,0 +1,30 @@
+<div class="lanes-container">
+
+  <h2>Lanes</h2>
+
+  <div *ngIf="loading" class="loading">Loading lanes...</div>
+
+  <div *ngIf="!loading && lanes.length === 0" class="empty-state">
+    No lanes available
+  </div>
+
+  <div class="lane-card" *ngFor="let l of lanes">
+
+    <!-- LEFT SECTION -->
+    <div class="lane-left">
+      <div class="lane-row"><strong>Lane ID:</strong> {{ l.laneId }}</div>
+      <div class="lane-row"><strong>Cost:</strong> {{ l.baseCost }}</div>
+      <div class="lane-row"><strong>Distance:</strong> {{ l.distance }}</div>
+      <div class="lane-row"><strong>Description:</strong> {{ l.description || '—' }}</div>
+    </div>
+
+    <!-- RIGHT SECTION -->
+    <div class="lane-right">
+      <div class="lane-row"><strong>Origin:</strong> {{ l.source }}</div>
+      <div class="lane-row"><strong>Destination:</strong> {{ l.destination }}</div>
+      <div class="lane-row"><strong>Product Type:</strong> {{ l.productType }}</div>
+    </div>
+
+  </div>
+
+</div>

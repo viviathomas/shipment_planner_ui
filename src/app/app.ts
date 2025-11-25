@@ -6,6 +6,7 @@
  import { UnifiedComponent } from './features/unified/unified.component';
  import { OptimizationComponent } from './features/optimization/optimization.component';
  import { ShipmentsComponent } from './features/shipments/shipments.component';
+import { LanesComponent } from './features/lanes/lanes.component';
 
  export const routes: Routes = [
    {
@@ -15,7 +16,8 @@
        { path: '', redirectTo: 'unified', pathMatch: 'full' },
        { path: 'unified', component: UnifiedComponent },
        { path: 'optimization', component: OptimizationComponent },
-       { path: 'shipments', component: ShipmentsComponent }
+       { path: 'shipments', component: ShipmentsComponent },
+       { path: 'lanes',component: LanesComponent}
      ]
    }
  ];
