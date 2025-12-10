@@ -1,0 +1,36 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  width: 420px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.stop-list div {
+  padding: 10px;
+  margin-bottom: 8px;
+  background: #f5f7fa;
+  border-radius: 6px;
+  cursor: move;
+}
+
+.fixed {
+  background: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

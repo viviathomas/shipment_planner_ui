@@ -1,19 +1,45 @@
-<h2>Optimization Settings</h2>
+<div class="optimization-container">
+  <h2>Optimization Settings</h2>
 
-<div class="setting">
-  <label>Distance Weight (α): {{ alpha }}</label>
-  <input type="range" min="0" max="1" step="0.1" [(ngModel)]="alpha" />
+  <div class="setting">
+    <label>Distance Weight (α): {{ distanceWeight | number:'1.2-2' }}</label>
+    <input 
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
+      [(ngModel)]="distanceWeight"
+    />
+  </div>
+
+  <div class="setting">
+    <label>Cost Weight (β): {{ costWeight | number:'1.2-2' }}</label>
+    <input 
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
+      [(ngModel)]="costWeight"
+    />
+  </div>
+
+  <div class="setting">
+    <label>Emission Weight (γ): {{ emissionWeight | number:'1.2-2' }}</label>
+    <input 
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
+      [(ngModel)]="emissionWeight"
+    />
+  </div>
+
+  <div class="button-group">
+    <button class="save-btn" (click)="save()">Save Settings</button>
+    <button class="reset-btn" (click)="reset()">Reset to Defaults</button>
+  </div>
+
+  <p class="success-message" *ngIf="savedMessage">{{ savedMessage }}</p>
+
+  <p class="muted">Saved settings will be used when planning shipments.</p>
 </div>
-
-<div class="setting">
-  <label>Cost Weight (β): {{ beta }}</label>
-  <input type="range" min="0" max="1" step="0.1" [(ngModel)]="beta" />
-</div>
-
-<div class="setting">
-  <label>Emission Weight (γ): {{ gamma }}</label>
-  <input type="range" min="0" max="1" step="0.1" [(ngModel)]="gamma" />
-</div>
-
-<button (click)="save()">Save Settings</button>
-<p class="muted">Saved settings will be used when you plan shipments from Unified Control.</p>

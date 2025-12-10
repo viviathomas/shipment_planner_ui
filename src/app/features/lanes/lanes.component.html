@@ -1,30 +1,134 @@
 <div class="lanes-container">
 
-  <h2>Lanes</h2>
+  <!-- Header -->
+  <div class="lanes-header-row">
+    <h2 class="page-title">Lanes Overview</h2>
 
-  <div *ngIf="loading" class="loading">Loading lanes...</div>
-
-  <div *ngIf="!loading && lanes.length === 0" class="empty-state">
-    No lanes available
+    <div class="search-box">
+      <input type="text"
+             placeholder="Search by ID, city, product..."
+             [(ngModel)]="searchTerm"
+             (input)="onSearchChange()" />
+    </div>
   </div>
 
-  <div class="lane-card" *ngFor="let l of lanes">
+  <!-- Filters -->
+  <div class="filters-row" *ngIf="lanes.length">
 
-    <!-- LEFT SECTION -->
-    <div class="lane-left">
-      <div class="lane-row"><strong>Lane ID:</strong> {{ l.laneId }}</div>
-      <div class="lane-row"><strong>Cost:</strong> {{ l.baseCost }}</div>
-      <div class="lane-row"><strong>Distance:</strong> {{ l.distance }}</div>
-      <div class="lane-row"><strong>Description:</strong> {{ l.description || '—' }}</div>
+    <div class="filter-group">
+      <label>Origin</label>
+      <select [(ngModel)]="filters.origin" (change)="onFilterChange()">
+        <option value="">All</option>
+        <option *ngFor="let o of uniqueOrigins" [value]="o">{{ o }}</option>
+      </select>
     </div>
 
-    <!-- RIGHT SECTION -->
-    <div class="lane-right">
-      <div class="lane-row"><strong>Origin:</strong> {{ l.source }}</div>
-      <div class="lane-row"><strong>Destination:</strong> {{ l.destination }}</div>
-      <div class="lane-row"><strong>Product Type:</strong> {{ l.productType }}</div>
+    <div class="filter-group">
+      <label>Destination</label>
+      <select [(ngModel)]="filters.destination" (change)="onFilterChange()">
+        <option value="">All</option>
+        <option *ngFor="let d of uniqueDestinations" [value]="d">{{ d }}</option>
+      </select>
     </div>
+
+    <div class="filter-group">
+      <label>Product Type</label>
+      <select [(ngModel)]="filters.productType" (change)="onFilterChange()">
+        <option value="">All</option>
+        <option *ngFor="let p of uniqueProductTypes" [value]="p">{{ p }}</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Sort</label>
+      <select [(ngModel)]="sortOption" (change)="onSortChange()">
+        <option value="costAsc">Cost ↑</option>
+        <option value="costDesc">Cost ↓</option>
+        <option value="distanceAsc">Distance ↑</option>
+        <option value="distanceDesc">Distance ↓</option>
+        <option value="emissionAsc">Emission ↑</option>
+        <option value="emissionDesc">Emission ↓</option>
+        <option value="capacityAsc">Capacity ↑</option>
+        <option value="capacityDesc">Capacity ↓</option>
+      </select>
+    </div>
+
+    <button class="reset-btn" (click)="resetFilters()">Reset</button>
 
   </div>
 
+  <!-- No Results -->
+  <div class="empty-state" *ngIf="!displayed.length">
+    No lanes match your filters.
+  </div>
+
+  <!-- Lanes Cards -->
+  <div class="lanes-grid" *ngIf="displayed.length">
+    <div class="lane-card" *ngFor="let l of displayed">
+
+      <div class="lane-header">
+        <div>
+          <div class="lane-id">{{ l.laneId }}</div>
+          <div class="lane-route">{{ l.source }} → {{ l.destination }}</div>
+        </div>
+
+        <div class="capacity-badge"
+             [ngClass]="{
+               'high': l.capacity > 1500,
+               'medium': l.capacity > 800 && l.capacity <= 1500,
+               'low': l.capacity <= 800
+             }">
+          {{ l.capacity }} kg
+        </div>
+      </div>
+
+      <div class="lane-body">
+        <div>
+          <p>Cost: <strong>{{ l.baseCost }}</strong></p>
+          <p>Distance: <strong>{{ l.distance }} km</strong></p>
+          <p>Emission: <strong>{{ l.emission }}</strong></p>
+        </div>
+
+        <div>
+          <p>Product: <strong>{{ l.productType }}</strong></p>
+          <p>Cost/km: <strong>{{ (l.baseCost / l.distance) | number:'1.2-2' }}</strong></p>
+          <p>Utilization: <strong>{{ getUtilization(l) }}</strong></p>
+        </div>
+      </div>
+
+      <div class="lane-actions">
+        <button class="btn-outline" (click)="openMap(l)">Map</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-row" *ngIf="totalPages > 1">
+    <button class="page-btn"
+            [disabled]="page === 1"
+            (click)="changePage(page - 1)">‹ Prev</button>
+
+    <button class="page-btn"
+            *ngFor="let p of pages"
+            [class.active]="p === page"
+            (click)="changePage(p)">
+      {{ p }}
+    </button>
+
+    <button class="page-btn"
+            [disabled]="page === totalPages"
+            (click)="changePage(page + 1)">Next ›</button>
+  </div>
+
+</div>
+
+<!-- MAP MODAL -->
+<div class="map-modal" *ngIf="showMapModal">
+  <div class="map-modal-content">
+    <h3>{{ selectedLane?.source }} → {{ selectedLane?.destination }}</h3>
+    <div id="laneMap"></div>
+
+    <button class="close-btn" (click)="closeMap()">Close</button>
+  </div>
 </div>

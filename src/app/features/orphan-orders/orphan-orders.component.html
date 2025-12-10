@@ -1,0 +1,114 @@
+<div class="orphan-orders-container">
+  <div class="header">
+    <h2>Orphan Orders - Lane Suggestions</h2>
+    <button class="refresh-btn" (click)="refresh()" [disabled]="loading">
+      {{ loading ? 'Loading...' : 'Refresh' }}
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Loading orphan orders and analyzing lanes...
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error && orphanOrders.length === 0" class="empty-state">
+    <h3>No Orphan Orders!</h3>
+    <p>All orders have assigned lanes.</p>
+  </div>
+
+  <div *ngIf="!loading && !error && orphanOrders.length > 0" class="orphan-list">
+    <div class="stats">
+      Found <strong>{{ orphanOrders.length }}</strong> order(s) without assigned lanes
+    </div>
+
+    <div class="order-card" *ngFor="let orphan of orphanOrders">
+      <!-- Order Details -->
+      <div class="order-header">
+        <h3>Order #{{ orphan.order.orderId }}</h3>
+        <span class="badge orphan-badge">No Lane Assigned</span>
+      </div>
+
+      <div class="order-details">
+        <div class="detail-row">
+          <span class="label">Origin:</span>
+          <span class="value">{{ orphan.order.source }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Destination:</span>
+          <span class="value">{{ orphan.order.destination }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Product Type:</span>
+          <span class="value">{{ orphan.order.productType || '—' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Weight:</span>
+          <span class="value">{{ orphan.order.weight }} kg</span>
+        </div>
+      </div>
+
+      <!-- Suggested Lanes -->
+      <div class="suggestions-section">
+        <h4>Suggested Lanes ({{ orphan.suggestedLanes.length }})</h4>
+
+        <div *ngIf="orphan.suggestedLanes.length === 0" class="no-suggestions">
+          No matching lanes found. Consider creating a new lane for this route.
+        </div>
+
+        <div class="lane-suggestions">
+          <div 
+            class="lane-suggestion" 
+            *ngFor="let lane of orphan.suggestedLanes.slice(0, 5)"
+            [ngClass]="getMatchClass(lane.matchScore)">
+            
+            <div class="lane-info">
+              <div class="lane-header">
+                <strong>{{ lane.laneId }}</strong>
+                <span class="match-badge" [ngClass]="getMatchClass(lane.matchScore)">
+                  {{ lane.matchScore }}% Match
+                </span>
+              </div>
+
+              <div class="lane-details-grid">
+                <div class="lane-detail">
+                  <span class="mini-label">From:</span>
+                  <span>{{ lane.source }}</span>
+                </div>
+                <div class="lane-detail">
+                  <span class="mini-label">To:</span>
+                  <span>{{ lane.destination }}</span>
+                </div>
+                <div class="lane-detail">
+                  <span class="mini-label">Product:</span>
+                  <span>{{ lane.productType || '—' }}</span>
+                </div>
+                <div class="lane-detail">
+                  <span class="mini-label">Cost:</span>
+                  <span>₹{{ lane.baseCost }}</span>
+                </div>
+                <div class="lane-detail">
+                  <span class="mini-label">Distance:</span>
+                  <span>{{ lane.distance }} km</span>
+                </div>
+                <div class="lane-detail full-width">
+                  <span class="mini-label">Match Reason:</span>
+                  <span class="match-reason">{{ lane.matchReason }}</span>
+                </div>
+              </div>
+            </div>
+
+            <button 
+              class="assign-btn" 
+              (click)="assignLane(orphan, lane)"
+              [ngClass]="getMatchClass(lane.matchScore)">
+              Assign Lane
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

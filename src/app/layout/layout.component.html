@@ -13,13 +13,14 @@
       <a routerLink="/optimization" routerLinkActive="active">Optimization Settings</a>
       <a routerLink="/shipments" routerLinkActive="active">Shipments</a>
       <a routerLink="/lanes" routerLinkActive="active">Lanes</a>
+      <a routerLink="/orphan-orders" routerLinkActive="active">Orphan Orders</a>
     </nav>
-
-
   </aside>
 
   <main class="content">
-    <router-outlet></router-outlet>
+    <div class="page-wrapper">
+      <router-outlet></router-outlet>
+    </div>
   </main>
 
 </div>

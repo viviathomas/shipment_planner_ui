@@ -1,109 +1,143 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-
-import { OrderService } from '../../services/order.service';
-import { ShipmentService, Shipment, Order } from '../../services/shipment.service';
+import { RouteApiService } from '../../services/route-api.service';
 import { OptimizationSettingsService } from '../../services/optimization-settings.service';
+import { MoveStopsComponent } from '../move-stops/move-stops.component';
 
 @Component({
   selector: 'app-unified',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, MoveStopsComponent],
   templateUrl: './unified.component.html',
   styleUrls: ['./unified.component.css']
 })
 export class UnifiedComponent implements OnInit {
 
-  orders: Order[] = [];
-  shipments: Shipment[] = [];
+  orders: any[] = [];
+  shipments: any[] = [];
+  performancePopup: any = null;
+
+
   selectedOrderIds = new Set<string>();
-  multiODWarning: string | null = null;
-  orphanOrders: any[] = [];
+
+  /** 🔥 REQUIRED BY HTML */
+  selectedShipmentIds = new Set<string>();
+  moveStopsShipments: any[] | null = null;
 
   loading = false;
 
   constructor(
-    private shipmentSvc: ShipmentService,
-    public orderService: OrderService,
-    private optSvc: OptimizationSettingsService
+    private routeApi: RouteApiService,
+    private optService: OptimizationSettingsService
   ) {}
 
-  ngOnInit() {
-    this.orderService.orders$.subscribe(data => {
-      this.orders = data;
+  ngOnInit(): void {
+    this.loadOrders();
+  }
+
+  /* ---------------- ORDERS ---------------- */
+
+  loadOrders(): void {
+    this.routeApi.getOrders().subscribe({
+      next: data => this.orders = data,
+      error: () => alert('Failed to load orders')
     });
-
-    if (this.orderService.getOrdersSnapshot().length === 0) {
-      this.orderService.loadOrdersFromBackend();
-    }
   }
 
-  uploadOrders(event: any) {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  uploadOrders(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
 
-    this.orderService.uploadOrders(file);
+    this.routeApi.uploadOrders(input.files[0]).subscribe({
+      next: () => this.loadOrders(),
+      error: () => alert('Upload failed')
+    });
   }
 
-  toggleOrderSelection(id: string) {
-    if (this.selectedOrderIds.has(id)) {
-      this.selectedOrderIds.delete(id);
-    } else {
-      this.selectedOrderIds.add(id);
-    }
+  toggleOrderSelection(id: string): void {
+    this.selectedOrderIds.has(id)
+      ? this.selectedOrderIds.delete(id)
+      : this.selectedOrderIds.add(id);
   }
 
-  toggleSelectAll(event: any) {
-    if (event.target.checked) {
-      this.orders.forEach(o => this.selectedOrderIds.add(o.orderId));
-    } else {
-      this.selectedOrderIds.clear();
-    }
-  }
-
-  isSelected(id: string) {
+  isSelected(id: string): boolean {
     return this.selectedOrderIds.has(id);
   }
 
-  // ⭐⭐⭐ THIS WAS OUTSIDE THE CLASS BEFORE — NOW FIXED
-  planSelectedOrders() {
-    if (this.selectedOrderIds.size === 0) {
-      alert("Select at least one order.");
-      return;
-    }
-    const selectedOrders = this.orders.filter(o =>
-    this.selectedOrderIds.has(o.orderId)
-  );
+  /* ---------------- PLANNING ---------------- */
 
-  // Detect MULTIPLE OD pairs → Option B warning
-  const odPairs = new Set(selectedOrders.map(o => o.source + "->" + o.destination));
+  planSelectedOrders(): void {
+    if (this.selectedOrderIds.size === 0) return;
 
-  if (odPairs.size > 1) {
-    this.multiODWarning =
-      "Multiple origin-destination pairs detected. Shipments will be created separately.";
-  } else {
-    this.multiODWarning = null;
-  }
-     const opt = this.optSvc.get();
+    this.loading = true;
 
-    const body = {
-      alpha: opt.alpha,
-      beta: opt.beta,
-      gamma: opt.gamma,
-      orders: Array.from(this.selectedOrderIds)   // correct key
-    };
+    this.optService.getSettings().subscribe({
+      next: settings => {
+        const body = {
+          orders: Array.from(this.selectedOrderIds),
+          alpha: settings.distanceWeight,
+          beta: settings.costWeight,
+          gamma: settings.emissionWeight
+        };
 
-    this.shipmentSvc.planShipments(body).subscribe({
-      next: (result: any) => {
-        this.shipments = result.shipments || [];   // extract shipments
-        this.selectedOrderIds.clear();
-      },
-      error: (err) => {
-        console.error(err);
-        alert("Planning failed");
+        this.routeApi.planRoutes(body).subscribe({
+          next: res => {
+            this.shipments = res.shipments || [];
+            this.selectedShipmentIds.clear();
+            this.loading = false;
+          },
+          error: () => {
+            this.loading = false;
+            alert('Planning failed');
+          }
+        });
       }
     });
   }
+
+  /* ---------------- SHIPMENTS ---------------- */
+
+  toggleShipmentSelection(id: string): void {
+    this.selectedShipmentIds.has(id)
+      ? this.selectedShipmentIds.delete(id)
+      : this.selectedShipmentIds.add(id);
+  }
+
+  openMoveStops(): void {
+    this.moveStopsShipments = this.shipments.filter(s =>
+      this.selectedShipmentIds.has(s.shipmentId)
+    );
+  }
+
+  onMoveStopsClosed(newShipment: any): void {
+    this.moveStopsShipments = null;
+    this.selectedShipmentIds.clear();
+
+    if (!newShipment) return;
+
+    // add newly created shipment
+    this.shipments = [...this.shipments, newShipment];
+  }
+  /* ---------------- PERFORMANCE (AGENT) ---------------- */
+
+openPerformance(shipment: any): void {
+  this.routeApi
+    .getPerformanceAnalysis(shipment.shipmentId)
+    .subscribe({
+      next: (res: any) => {
+        this.performancePopup = {
+          ...res,
+          primaryShipment: shipment
+        };
+      },
+      error: () => {
+        alert('Failed to load performance analysis');
+      }
+    });
+}
+
+closePerformance(): void {
+  this.performancePopup = null;
+}
+
 }

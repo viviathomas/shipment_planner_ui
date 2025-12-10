@@ -1,0 +1,28 @@
+<div class="backdrop" (click)="cancel()"></div>
+
+<div class="modal">
+  <h2>Move Stops – Manual Restructuring</h2>
+
+  <p class="info-text">
+    You are manually restructuring stops from selected shipments.
+  </p>
+
+  <div class="stops">
+    <div class="stop-row" *ngFor="let s of stops; let i = index">
+      <span class="stop-name">{{ s }}</span>
+
+      <div class="controls">
+        <button (click)="moveUp(i)" [disabled]="i === 0">↑</button>
+        <button (click)="moveDown(i)" [disabled]="i === stops.length - 1">↓</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button (click)="apply()" [disabled]="loading">
+      {{ loading ? 'Creating...' : 'Create New Shipment' }}
+    </button>
+
+    <button class="secondary" (click)="cancel()">Cancel</button>
+  </div>
+</div>

@@ -54,7 +54,6 @@ export class ShipmentService {
 }
 
 
-  // 🚀 FIXED: Correct endpoint + correct field name “orders”
   planShipments(body: any): Observable<RoutePlanResult> {
     return new Observable<RoutePlanResult>(observer => {
       this.http.post<RoutePlanResult>(`${this.base}/routes/plan`, body).subscribe({

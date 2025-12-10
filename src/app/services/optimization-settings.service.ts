@@ -1,29 +1,27 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-export interface OptSettings { alpha: number; beta: number; gamma: number; }
+export interface OptSettings {
+  distanceWeight: number;
+  costWeight: number;
+  emissionWeight: number;
+}
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class OptimizationSettingsService {
-  private readonly KEY = 'opt_settings_v1';
 
-  private subject = new BehaviorSubject<OptSettings>(this.load());
-  public changes$ = this.subject.asObservable();
+  private api = 'http://localhost:8080/optimization-settings';
 
-  private load(): OptSettings {
-    try {
-      const raw = localStorage.getItem(this.KEY);
-      if (!raw) return { alpha: 0.2, beta: 0.7, gamma: 0.3 };
-      return JSON.parse(raw) as OptSettings;
-    } catch {
-      return { alpha: 0.2, beta: 0.7, gamma: 0.3 };
-    }
+  constructor(private http: HttpClient) {}
+
+  getSettings(): Observable<OptSettings> {
+    return this.http.get<OptSettings>(this.api);
   }
 
-  get(): OptSettings { return this.subject.value; }
-
-  set(s: OptSettings) {
-    localStorage.setItem(this.KEY, JSON.stringify(s));
-    this.subject.next(s);
+  saveSettings(settings: OptSettings): Observable<OptSettings> {
+    return this.http.post<OptSettings>(this.api, settings);
   }
 }
